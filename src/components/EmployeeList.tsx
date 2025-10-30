@@ -1,5 +1,6 @@
-import type { Employee } from '../types';
-import { calculateCosts } from '../utils/cost';
+import { useState, useMemo, useEffect, useRef } from "react";
+import type { Employee } from "../types";
+import { calculateCosts } from "../utils/cost";
 
 type Props = {
   employees: Employee[];
@@ -7,12 +8,63 @@ type Props = {
   onDelete: (id: string) => void;
 };
 
+const PAGE_SIZE = 20;
+
 export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
+  const [query, setQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  // 🔍 Filter employees by name or dependent name
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return employees;
+    return employees.filter(
+      (emp) =>
+        emp.name.toLowerCase().includes(q) ||
+        emp.dependents.some((d) => d.name.toLowerCase().includes(q))
+    );
+  }, [employees, query]);
+
+  // ✂️ Slice for infinite scrolling
+  const visibleEmployees = filtered.slice(0, visibleCount);
+
+  // ⬇️ Infinite scroll observer
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && visibleCount < filtered.length) {
+          setVisibleCount((prev) => prev + PAGE_SIZE);
+        }
+      },
+      { rootMargin: "100px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [filtered.length, visibleCount]);
+
   if (!employees.length) return null;
 
   return (
     <div className="mt-6">
-      <h2 className="mb-2 text-lg font-semibold">Employees</h2>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Employees</h2>
+        <input
+          type="text"
+          placeholder="Search by name or dependent..."
+          className="rounded border px-2 py-1 text-sm"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setVisibleCount(PAGE_SIZE); // reset when filtering
+          }}
+        />
+      </div>
 
       <div className="hidden items-center border-b text-sm font-medium text-gray-600 md:grid md:grid-cols-[2fr_2fr_1fr_auto]">
         <div className="p-2">Name</div>
@@ -21,9 +73,9 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
         <div className="p-2 text-right">Actions</div>
       </div>
 
-      {employees.map(emp => {
+      {visibleEmployees.map((emp) => {
         const { perPaycheck, totalYearly } = calculateCosts(emp);
-        const deps = emp.dependents.map(d => d.name).join(', ') || '—';
+        const deps = emp.dependents.map((d) => d.name).join(", ") || "—";
 
         return (
           <div
@@ -38,8 +90,11 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
 
             {/* Costs */}
             <div className="w-full p-2 text-right">
-              ${perPaycheck.toFixed(2)} <span className="text-gray-500">/paycheck</span>
-              <div className="text-xs text-gray-400">${totalYearly.toFixed(2)} /yr</div>
+              ${perPaycheck.toFixed(2)}{" "}
+              <span className="text-gray-500">/paycheck</span>
+              <div className="text-xs text-gray-400">
+                ${totalYearly.toFixed(2)} /yr
+              </div>
             </div>
 
             {/* Actions */}
@@ -60,6 +115,17 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
           </div>
         );
       })}
+
+      {/* Sentinel for infinite scroll */}
+      <div ref={sentinelRef} className="h-8" />
+
+      {visibleEmployees.length < filtered.length && (
+        <p className="py-2 text-center text-sm text-gray-500">Loading more...</p>
+      )}
+
+      {!filtered.length && (
+        <p className="py-4 text-center text-sm text-gray-500">No matching employees found.</p>
+      )}
     </div>
   );
 }

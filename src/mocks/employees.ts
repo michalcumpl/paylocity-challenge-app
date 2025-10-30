@@ -18,5 +18,4 @@ function makeEmployee(): Employee {
   };
 }
 
-export const mockEmployees: Employee[] = Array.from({ length: 100 }, () => makeEmployee());
-
+export const mockEmployees: Employee[] = Array.from({ length: 1000 }, () => makeEmployee());
