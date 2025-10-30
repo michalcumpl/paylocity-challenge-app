@@ -4,6 +4,7 @@ import EmployeeList from './components/EmployeeList';
 import EmployeeForm from './components/EmployeeForm';
 import SummaryPanel from './components/SummaryPanel';
 import type { Employee } from './types.ts';
+import Header from './components/Header.tsx';
 
 export default function App() {
   const { employees, addEmployee, updateEmployee, removeEmployee } = useEmployees();
@@ -11,6 +12,7 @@ export default function App() {
 
   return (
     <div className="mx-auto max-w-4xl p-4">
+      <Header />
       <h1 className="mb-4 text-xl font-bold">Healthcare Benefits Manager</h1>
 
       {editing ? (
