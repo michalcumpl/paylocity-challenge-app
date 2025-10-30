@@ -44,8 +44,8 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
 
   const name = watch('name');
   const hasDiscount = eligibleForDiscount(name);
-  
-   const dependents = watch("dependents") || [];
+
+  const dependents = watch('dependents') || [];
 
   const onSubmit = (data: EmployeeFormData) => {
     onSave(data);
@@ -64,9 +64,7 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
           )}
           placeholder="Employee name"
         />
-        {hasDiscount && (
-          <p className="mt-1 text-xs text-green-600">🎉 10% discount</p>
-        )}
+        {hasDiscount && <p className="mt-1 text-xs text-green-600">🎉 10% discount</p>}
         {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
       </div>
 
