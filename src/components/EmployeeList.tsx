@@ -15,14 +15,22 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // 🔍 Filter employees by name or dependent name
+  // 🔍 Filter and sort employees by name or dependent name
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return employees;
-    return employees.filter(
-      emp =>
-        emp.name.toLowerCase().includes(q) ||
-        emp.dependents.some(d => d.name.toLowerCase().includes(q)),
+    let list = employees;
+
+    if (q) {
+      list = employees.filter(
+        emp =>
+          emp.name.toLowerCase().includes(q) ||
+          emp.dependents.some(d => d.name.toLowerCase().includes(q)),
+      );
+    }
+
+    // 🧭 Sort alphabetically by employee name
+    return [...list].sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
     );
   }, [employees, query]);
 
