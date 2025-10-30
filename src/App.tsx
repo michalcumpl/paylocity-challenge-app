@@ -1,19 +1,18 @@
 import { useState } from 'react';
-import { useEmployees } from './hooks/useEmployees';
-import EmployeeList from './components/EmployeeList';
 import EmployeeForm from './components/EmployeeForm';
-import SummaryPanel from './components/SummaryPanel';
-import type { Employee } from './types.ts';
+import EmployeeList from './components/EmployeeList';
 import Header from './components/Header.tsx';
+import SummaryPanel from './components/SummaryPanel';
+import { useEmployees } from './hooks/useEmployees';
+import type { Employee } from './types.ts';
 
 export default function App() {
   const { employees, addEmployee, updateEmployee, removeEmployee } = useEmployees();
   const [editing, setEditing] = useState<Employee | null>(null);
 
   return (
-    <div className="mx-auto max-w-4xl p-4">
+    <div className="mx-auto max-w-7xl min-w-xs px-6">
       <Header />
-      <h1 className="mb-4 text-xl font-bold">Healthcare Benefits Manager</h1>
 
       {editing ? (
         <EmployeeForm
@@ -26,7 +25,10 @@ export default function App() {
           onCancel={() => setEditing(null)}
         />
       ) : (
-        <button className="blue-button" onClick={() => setEditing({ id: '', name: '', dependents: [] })}>
+        <button
+          className="blue-button"
+          onClick={() => setEditing({ id: '', name: '', dependents: [] })}
+        >
           Add Employee
         </button>
       )}

@@ -18,8 +18,8 @@ export default function Logo({ ...props }: HTMLAttributes<SVGElement>) {
           y2="66.43"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#FF8F1C"></stop>
-          <stop offset="1" stop-color="#ed2024"></stop>
+          <stop offset="0" stopColor="#FF8F1C"></stop>
+          <stop offset="1" stopColor="#ed2024"></stop>
         </linearGradient>
         <linearGradient
           id="linear-gradient-2"
