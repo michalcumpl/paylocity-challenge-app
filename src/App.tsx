@@ -57,7 +57,7 @@ export default function App() {
             Add Employee
           </button>
         </div>
-        <div className="container-px">
+        <div className="container-px my-1">
           <SummaryPanel employees={employees} />
         </div>
       </div>
