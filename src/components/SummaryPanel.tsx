@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import type { Employee } from "../types";
 import { calculateCosts, eligibleForDiscount } from "../utils/cost";
-import { formatCurrency } from "../utils/format";
+import { formatCurrency, formatNumber } from "../utils/format";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 const COLORS = ["#3b82f6", "#10b981"]; // Tailwind blue & green
@@ -77,16 +77,16 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
             <div className="space-y-1 text-gray-700">
               <p>
                 👥 <span className="font-medium">Employees:</span>{" "}
-                {employeeCount}
+                {formatNumber(employeeCount)}
               </p>
               <p>
-                💚 Employees with discount: {discountedEmployees}
+                💚 Employees with discount: {formatNumber(discountedEmployees)}
               </p>
               <p>
-                👶 Dependents: {dependentCount}
+                👶 Dependents: {formatNumber(dependentCount)}
               </p>
               <p>
-                💚 Dependents with discount: {discountedDependents}
+                💚 Dependents with discount: {formatNumber(discountedDependents)}
               </p>
               <hr className="my-2" />
               <p>
