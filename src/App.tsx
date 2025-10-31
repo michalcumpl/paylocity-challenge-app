@@ -4,8 +4,8 @@ import EmployeeList from './components/EmployeeList';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import SummaryPanel from './components/SummaryPanel';
-import { useEmployees } from './hooks/useEmployees';
 import { useDebounce } from './hooks/useDebounce';
+import { useEmployees } from './hooks/useEmployees';
 import type { Employee } from './types';
 
 export default function App() {
@@ -50,9 +50,7 @@ export default function App() {
   return (
     <div className="flex h-screen flex-col">
       <header className="sticky top-0 z-20 bg-white shadow-sm">
-        <div className="container py-3">
-          <Header />
-        </div>
+        <Header />
       </header>
 
       <div className="sticky top-16 z-10 bg-gray-50 shadow-inner">

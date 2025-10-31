@@ -53,7 +53,7 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
   ];
 
   return (
-    <div className="sticky top-16 z-10 border-b bg-gray-50 shadow-sm md:static md:shadow-none">
+    <div className="sticky top-16 z-10 border-b w-full bg-gray-50 shadow-sm md:static md:shadow-none">
       {/* Toggle header (mobile only) */}
       <button
         onClick={() => setOpen(!open)}
