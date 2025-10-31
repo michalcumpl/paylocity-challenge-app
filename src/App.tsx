@@ -57,7 +57,7 @@ export default function App() {
             Add Employee
           </button>
         </div>
-        <div className="container-px mb-4">
+        <div className="container-px">
           <SummaryPanel employees={employees} />
         </div>
       </div>
@@ -69,7 +69,7 @@ export default function App() {
             type="search"
             id="employee-search"
             placeholder="Search by name..."
-            className="input-base w-auto"
+            className="input-base w-auto h-[34px]"
             value={query}
             onChange={e => setQuery(e.target.value)}
           />

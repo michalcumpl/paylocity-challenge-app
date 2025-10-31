@@ -42,7 +42,7 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
         <thead>
           <tr className="border-b border-gray-300 text-left text-gray-600">
             <th className="border-r border-gray-300 p-2"></th>
-            <th className="p-2 text-right font-semibold">Persons</th>
+            <th className="p-2 text-right font-semibold">#</th>
             <th className="p-2 text-right font-semibold">Per Paycheck</th>
             <th className="hidden p-2 text-right font-semibold sm:table-cell">Per Year</th>
             <th className="hidden p-2 text-right font-semibold sm:table-cell">Average</th>
