@@ -26,11 +26,7 @@ export default function App() {
     const q = query.trim().toLowerCase();
     let list = employees;
     if (q) {
-      list = employees.filter(
-        emp =>
-          emp.name.toLowerCase().includes(q) ||
-          emp.dependents.some(d => d.name.toLowerCase().includes(q)),
-      );
+      list = employees.filter(emp => emp.name.toLowerCase().includes(q));
     }
     return [...list].sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
@@ -50,48 +46,51 @@ export default function App() {
 
   return (
     <div className="flex h-screen flex-col">
-      {/* Sticky Header */}
       <header className="sticky top-0 z-20 bg-white shadow-sm">
-        <div className="mx-auto max-w-7xl px-6 py-3">
+        <div className="container py-3">
           <Header />
         </div>
       </header>
 
-      {/* Sticky Summary */}
-      <div className="sticky top-[64px] z-10 bg-gray-50 shadow-inner">
-        <div className="mx-auto flex max-w-7xl flex-col items-end px-6 py-2">
+      <div className="sticky top-16 z-10 bg-gray-50 shadow-inner">
+        <div className="container flex flex-col items-end py-2">
           <button
             className="blue-button mt-3"
             onClick={() => setEditing({ id: '', name: '', dependents: [] })}
           >
-            ➕ Add Employee
+            Add Employee
           </button>
           <SummaryPanel employees={employees} />
         </div>
       </div>
 
-      <div>
+      <div className="container flex justify-between">
         <h2 className="mb-2 text-lg font-semibold">Employees</h2>
         <input
-          type="text"
-          placeholder="Search by name or dependent..."
+          type="search"
+          placeholder="Search by name..."
           className="rounded border px-2 py-1 text-sm"
           value={query}
           onChange={e => setQuery(e.target.value)}
         />
       </div>
-      {/* Scrollable Employee List */}
-      <main className="flex-1 overflow-y-auto bg-white">
-        <div className="mx-auto max-w-7xl px-6 pb-16">
-          <EmployeeList
-            employees={filteredEmployees}
-            onEdit={setEditing}
-            onDelete={removeEmployee}
-          />
+
+      <main className="overflow-y-auto bg-white">
+        <div className="container pb-16">
+          {filteredEmployees.length === 0 ? (
+            <div className="flex h-full items-center justify-center text-gray-500">
+              No matching employees found.
+            </div>
+          ) : (
+            <EmployeeList
+              employees={filteredEmployees}
+              onEdit={setEditing}
+              onDelete={removeEmployee}
+            />
+          )}
         </div>
       </main>
 
-      {/* Modal */}
       <Modal open={!!editing} onClose={() => setEditing(null)}>
         {editing && (
           <EmployeeForm initial={editing} onSave={handleSave} onCancel={() => setEditing(null)} />

@@ -9,4 +9,8 @@
   .blue-button {
     @apply rounded bg-blue-500 px-3 py-1 text-white;
   }
+
+  .container {
+    @apply mx-auto w-full max-w-7xl px-6;
+  }
 }
