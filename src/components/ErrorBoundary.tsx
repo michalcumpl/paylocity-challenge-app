@@ -18,8 +18,8 @@ export default class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, info: any) {
-    console.error('❌ Uncaught error in component tree:', error, info);
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('Uncaught error in component tree:', error, info);
   }
 
   render() {
@@ -27,7 +27,7 @@ export default class ErrorBoundary extends Component<Props, State> {
       return (
         this.props.fallback ?? (
           <div className="flex h-screen flex-col items-center justify-center text-center">
-            <h1 className="mb-2 text-2xl font-bold text-red-600">Something went wrong 😢</h1>
+            <h1 className="mb-2 text-2xl font-bold text-red-600">Something went wrong</h1>
             <p className="mb-4 text-gray-600">
               {this.state.error?.message || 'An unexpected error occurred.'}
             </p>
