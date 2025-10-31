@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Employee } from '../types';
-import { employeeApi } from '../api/employee';
+import { employeeApi } from '../api/employees';
 
 export function useEmployees() {
   const [employees, setEmployees] = useState<Employee[]>([]);
