@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import type { Employee } from '../types';
 import { calculateCosts } from '../utils/cost';
+import { formatCurrency } from '../utils/format';
 
 type Props = {
   employees: Employee[];
@@ -98,8 +99,8 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
 
             {/* Costs */}
             <div className="w-full p-2 text-right">
-              ${perPaycheck.toFixed(2)} <span className="text-gray-500">/paycheck</span>
-              <div className="text-xs text-gray-400">${totalYearly.toFixed(2)} /yr</div>
+              {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>
+              <div className="text-xs text-gray-400">{formatCurrency(totalYearly)} /yr</div>
             </div>
 
             {/* Actions */}

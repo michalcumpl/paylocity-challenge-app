@@ -1,6 +1,7 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { Employee } from '../types';
 import { calculateCosts } from '../utils/cost';
+import { formatCurrency } from '../utils/format';
 
 const COLORS = ['#3b82f6', '#10b981']; // Tailwind blue & green
 
@@ -33,10 +34,10 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <p className="text-gray-700">
-            <span className="font-medium">Total yearly cost:</span> ${totalYearly.toFixed(2)}
+            <span className="font-medium">Total yearly cost:</span> {formatCurrency(totalYearly)}
           </p>
           <p className="text-gray-700">
-            <span className="font-medium">Total per paycheck:</span> ${perPaycheck.toFixed(2)}
+            <span className="font-medium">Total per paycheck:</span> {formatCurrency(perPaycheck)}
           </p>
           <p className="mt-2 text-sm text-gray-500">(based on 26 pay periods per year)</p>
         </div>
@@ -53,11 +54,11 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
                 outerRadius={70}
                 label
               >
-                {data.map((entry, index) => (
+                {data.map((_entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={v => `$${v.toFixed(2)}`} />
+              <Tooltip formatter={v => formatCurrency(v as number)} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
