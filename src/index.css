@@ -1,13 +1,28 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
 
 @theme {
   --font-sans: 'Open Sans', sans-serif;
 }
 
 @layer components {
-  .blue-button {
-    @apply rounded bg-blue-500 px-3 py-1 text-white;
+  .input-base {
+    @apply w-full rounded p-2;
+  }
+
+  .button-base {
+    @apply rounded border border-gray-500 px-3 py-1 text-gray-500 hover:text-gray-600;
+  }
+
+  .button-success {
+    @apply rounded border border-blue-500 px-3 py-1 text-blue-500 hover:text-blue-600;
+  }
+
+  .button-danger {
+    @apply rounded border border-red-500 px-3 py-1 text-red-500 hover:text-red-600;
+  }
+
+  .container-px {
+    @apply container mx-auto min-w-[360px] px-6 max-w-7xl;
   }
 }

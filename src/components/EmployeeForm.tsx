@@ -1,9 +1,10 @@
-import { useForm, useFieldArray } from 'react-hook-form';
-import { z } from 'zod';
-import { clsx } from 'clsx';
+import { TrashIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
 import type { Employee } from '../types';
-import { eligibleForDiscount } from '../utils/cost';
+import { calculateCosts } from '../utils/cost';
+import { formatCurrency } from '../utils/format';
 
 const dependentSchema = z.object({
   id: z.string(),
@@ -42,10 +43,8 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
     name: 'dependents',
   });
 
-  const name = watch('name');
-  const hasDiscount = eligibleForDiscount(name);
-  
-   const dependents = watch("dependents") || [];
+  const values = watch();
+  const previewCosts = calculateCosts(values);
 
   const onSubmit = (data: EmployeeFormData) => {
     onSave(data);
@@ -53,63 +52,69 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded border p-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
       <div>
         <label className="block text-sm font-medium">Employee Name</label>
-        <input
-          {...register('name')}
-          className={clsx(
-            'w-full rounded border p-2',
-            hasDiscount ? 'border-green-500 bg-green-50' : 'mt-1 w-full rounded border p-1',
-          )}
-          placeholder="Employee name"
-        />
-        {hasDiscount && (
-          <p className="mt-1 text-xs text-green-600">🎉 10% discount</p>
-        )}
+        <input {...register('name')} className="input-base mt-1" placeholder="Employee name" />
         {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
       </div>
 
       <div>
-        <h3 className="mb-2 font-medium">Dependents</h3>
-        {fields.map((field, index) => {
-          const depName = dependents[index]?.name ?? '';
-          const hasDiscount = eligibleForDiscount(depName);
-
-          return (
-            <div
-              key={field.id}
-              className={`flex items-center gap-2 rounded border p-2 transition-all ${
-                hasDiscount ? 'border-green-500 bg-green-50' : 'border-gray-300'
-              }`}
-            >
-              <input
-                {...register(`dependents.${index}.name`)}
-                placeholder="Dependent name"
-                className="flex-1 rounded border p-1"
-              />
-              {hasDiscount && <span className="text-xs text-green-700">🎉 10% discount</span>}
-              <button type="button" onClick={() => remove(index)}>
-                ❌
-              </button>
-            </div>
-          );
-        })}
+        <h3 className="mb-2 text-sm font-medium">Dependents</h3>
+        {fields.length > 0 && (
+          <div className="space-y-2 rounded border border-gray-500 p-3">
+            {fields.map((field, index) => {
+              return (
+                <div key={field.id} className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <input
+                      {...register(`dependents.${index}.name`)}
+                      placeholder="Dependent name"
+                      className="input-base"
+                    />
+                    <button
+                      type="button"
+                      className="button-danger p-2.5"
+                      onClick={() => remove(index)}
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                  </div>
+                  {errors.dependents?.[index]?.name && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.dependents[index]?.name?.message}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         <button
           type="button"
-          className="mt-2 rounded border px-2 py-1"
+          className="button-base mt-2 flex items-center gap-1"
           onClick={() => append({ id: crypto.randomUUID(), name: '' })}
         >
-          ➕ Add Dependent
+          <UserPlusIcon className="h-5 w-5" />
+          Add Dependent
         </button>
       </div>
 
+      <div className="rounded border border-orange-300 p-3 text-sm">
+        <p>
+          Estimated yearly: <strong>{formatCurrency(previewCosts.totalYearly)}</strong>
+        </p>
+        <p>
+          Per paycheck: <strong>{formatCurrency(previewCosts.perPaycheck)}</strong>
+        </p>
+      </div>
+
       <div className="flex gap-2">
-        <button type="submit" className="rounded bg-blue-500 px-3 py-1 text-white">
+        <button type="submit" className="button-success">
           Save
         </button>
-        <button type="button" onClick={onCancel} className="rounded border px-3 py-1">
+        <button type="button" onClick={onCancel} className="button-base">
           Cancel
         </button>
       </div>

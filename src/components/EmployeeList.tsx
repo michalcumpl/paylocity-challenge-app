@@ -1,5 +1,8 @@
+import { useEffect, useRef, useState } from 'react';
 import type { Employee } from '../types';
 import { calculateCosts } from '../utils/cost';
+import { formatCurrency } from '../utils/format';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   employees: Employee[];
@@ -7,38 +10,72 @@ type Props = {
   onDelete: (id: string) => void;
 };
 
+const PAGE_SIZE = 20;
+
 export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
-  if (!employees.length) return null;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const visibleEmployees = employees.slice(0, visibleCount);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && visibleCount < employees.length) {
+          setVisibleCount(prev => prev + PAGE_SIZE);
+        }
+      },
+      { rootMargin: '100px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [visibleCount, employees.length]);
+
+  if (!employees.length)
+    return <div className="py-8 text-center text-gray-500">No matching employees found.</div>;
 
   return (
-    <div>
-      <h2>Employees</h2>
-      {employees.map(emp => {
+    <div className="w-full text-sm">
+      <div className="sticky top-0 z-10 hidden border-b border-gray-400 bg-white font-medium text-gray-600 md:grid md:grid-cols-4">
+        <div className="px-2 py-2">Name</div>
+        <div className="px-2 py-2">Dependents</div>
+        <div className="px-2 py-2 text-right">Costs</div>
+        <div className="px-2 py-2 text-right">Actions</div>
+      </div>
+
+      {/* Rows */}
+      {visibleEmployees.map(emp => {
         const { perPaycheck, totalYearly } = calculateCosts(emp);
+        const deps = emp.dependents.map(d => d.name).join(', ') || '—';
         return (
-          <div key={emp.id} className="mb-2 rounded border p-2">
-            <div>
-              <strong>{emp.name}</strong> — ${perPaycheck.toFixed(2)} / paycheck
+          <div
+            key={emp.id}
+            className="flex flex-col border-b border-gray-300 py-2 sm:grid sm:grid-cols-4"
+          >
+            <div className="px-2 font-medium">{emp.name}</div>
+            <div className="px-2 text-gray-700">{deps}</div>
+            <div className="px-2 sm:text-right">
+              <div>
+                {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>
+              </div>
+              <div>
+                {formatCurrency(totalYearly)} <span className="text-gray-500">/yr</span>
+              </div>
             </div>
-            <div>Dependents: {emp.dependents.map(d => d.name).join(', ') || 'None'}</div>
-            <small>Yearly: ${totalYearly.toFixed(2)}</small>
-            <div className="my-2 space-x-2">
-              <button
-                className="blue-button"
-                onClick={() => onEdit(emp)}
-              >
-                Edit
+            <div className="flex justify-center sm:justify-end">
+              <button className="button-success border-none p-2" onClick={() => onEdit(emp)}>
+                <PencilSquareIcon className="h-5 w-5" />
               </button>
-              <button
-                className="rounded bg-red-500 px-3 py-1 text-white"
-                onClick={() => onDelete(emp.id)}
-              >
-                Delete
+              <button className="button-danger border-none p-2" onClick={() => onDelete(emp.id)}>
+                <TrashIcon className="h-5 w-5" />
               </button>
             </div>
           </div>
         );
       })}
+
+      <div ref={sentinelRef} className="h-8" />
     </div>
   );
 }
