@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Employee } from '../types';
 import { calculateCosts } from '../utils/cost';
 import { formatCurrency } from '../utils/format';
@@ -7,38 +7,20 @@ type Props = {
   employees: Employee[];
   onEdit: (emp: Employee) => void;
   onDelete: (id: string) => void;
+  onFilter?: (query: string) => Employee[]; // 👈 external filter logic
 };
 
 const PAGE_SIZE = 20;
 
-export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
-  const [query, setQuery] = useState('');
+export default function EmployeeList({ employees, onEdit, onDelete, onFilter }: Props) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // 🔍 Filter and sort employees by name or dependent name
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    let list = employees;
-
-    if (q) {
-      list = employees.filter(
-        emp =>
-          emp.name.toLowerCase().includes(q) ||
-          emp.dependents.some(d => d.name.toLowerCase().includes(q)),
-      );
-    }
-
-    // 🧭 Sort alphabetically by employee name
-    return [...list].sort((a, b) =>
-      a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
-    );
-  }, [employees, query]);
-
-  // ✂️ Slice for infinite scrolling
+  // Filtered (from parent, if provided)
+  const filtered = onFilter ? (onFilter('') ?? []) : employees;
   const visibleEmployees = filtered.slice(0, visibleCount);
 
-  // ⬇️ Infinite scroll observer
+  // Infinite scroll
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
@@ -61,20 +43,6 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
 
   return (
     <div className="mt-6">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Employees</h2>
-        <input
-          type="text"
-          placeholder="Search by name or dependent..."
-          className="rounded border px-2 py-1 text-sm"
-          value={query}
-          onChange={e => {
-            setQuery(e.target.value);
-            setVisibleCount(PAGE_SIZE); // reset when filtering
-          }}
-        />
-      </div>
-
       <div className="hidden items-center border-b text-sm font-medium text-gray-600 md:grid md:grid-cols-[2fr_2fr_1fr_auto]">
         <div className="p-2">Name</div>
         <div className="p-2">Dependents</div>
@@ -91,19 +59,12 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
             key={emp.id}
             className="flex flex-col items-center border-b py-2 text-sm md:grid md:grid-cols-[2fr_2fr_1fr_auto]"
           >
-            {/* Name */}
             <div className="w-full p-2 font-medium">{emp.name}</div>
-
-            {/* Dependents */}
             <div className="w-full p-2 text-gray-700 md:text-left">{deps}</div>
-
-            {/* Costs */}
             <div className="w-full p-2 text-right">
               {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>
               <div className="text-xs text-gray-400">{formatCurrency(totalYearly)} /yr</div>
             </div>
-
-            {/* Actions */}
             <div className="flex justify-end gap-2 p-2">
               <button
                 className="rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600"
@@ -122,7 +83,6 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
         );
       })}
 
-      {/* Sentinel for infinite scroll */}
       <div ref={sentinelRef} className="h-8" />
 
       {visibleEmployees.length < filtered.length && (
