@@ -1,19 +1,24 @@
+/** eslint-disable @typescript-eslint/no-unused-expressions */
 import { useMemo, useState } from 'react';
 import EmployeeForm from './components/EmployeeForm';
 import EmployeeList from './components/EmployeeList';
 import Header from './components/Header';
+import Modal from './components/Modal';
 import SummaryPanel from './components/SummaryPanel';
 import { useEmployees } from './hooks/useEmployees';
-import Modal from './components/Modal';
 import type { Employee } from './types';
 
 export default function App() {
-  const { employees, addEmployee, updateEmployee, removeEmployee } = useEmployees();
+  const { employees, addEmployee, updateEmployee, removeEmployee, loading } = useEmployees();
   const [editing, setEditing] = useState<Employee | null>(null);
   const [query, setQuery] = useState('');
 
   const handleSave = (emp: Employee) => {
-    editing?.id ? updateEmployee(emp) : addEmployee(emp);
+    if (editing?.id) {
+      updateEmployee(emp);
+    } else {
+      addEmployee(emp);
+    }
     setEditing(null);
   };
 
@@ -31,6 +36,17 @@ export default function App() {
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
     );
   }, [employees, query]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-400 border-t-transparent" />
+          <p className="mt-4 text-sm text-gray-600">Loading employees…</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen flex-col">

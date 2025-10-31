@@ -19,9 +19,9 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
   if (!employees.length) return null;
 
   // Aggregate totals
+  const employeeCount = employees.length;
   let totalEmpCost = 0;
   let totalDepCost = 0;
-  let employeeCount = employees.length;
   let discountedEmployees = 0;
   let dependentCount = 0;
   let discountedDependents = 0;
@@ -53,7 +53,7 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
   ];
 
   return (
-    <div className="sticky top-[64px] z-10 border-b bg-gray-50 shadow-sm md:static md:shadow-none">
+    <div className="sticky top-16 z-10 border-b bg-gray-50 shadow-sm md:static md:shadow-none">
       {/* Toggle header (mobile only) */}
       <button
         onClick={() => setOpen(!open)}
