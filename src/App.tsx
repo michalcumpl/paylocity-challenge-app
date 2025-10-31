@@ -1,11 +1,11 @@
-/** eslint-disable @typescript-eslint/no-unused-expressions */
-import { useMemo, useState } from 'react';
+import { useDeferredValue, useMemo, useState } from 'react';
 import EmployeeForm from './components/EmployeeForm';
 import EmployeeList from './components/EmployeeList';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import SummaryPanel from './components/SummaryPanel';
 import { useEmployees } from './hooks/useEmployees';
+import { useDebounce } from './hooks/useDebounce';
 import type { Employee } from './types';
 
 export default function App() {
@@ -22,16 +22,19 @@ export default function App() {
     setEditing(null);
   };
 
+  const debouncedQuery = useDebounce(query);
+
   const filteredEmployees = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    let list = employees;
-    if (q) {
-      list = employees.filter(emp => emp.name.toLowerCase().includes(q));
-    }
-    return [...list].sort((a, b) =>
+    const q = debouncedQuery.trim().toLowerCase();
+    if (!q) return employees;
+
+    const filtered = employees.filter(emp => emp.name.toLowerCase().includes(q));
+    return filtered.sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
     );
-  }, [employees, query]);
+  }, [employees, debouncedQuery]);
+
+  const deferredEmployees = useDeferredValue(filteredEmployees);
 
   if (loading) {
     return (
@@ -77,13 +80,13 @@ export default function App() {
 
       <main className="overflow-y-auto bg-white">
         <div className="container pb-16">
-          {filteredEmployees.length === 0 ? (
+          {deferredEmployees.length === 0 ? (
             <div className="flex h-full items-center justify-center text-gray-500">
               No matching employees found.
             </div>
           ) : (
             <EmployeeList
-              employees={filteredEmployees}
+              employees={deferredEmployees}
               onEdit={setEditing}
               onDelete={removeEmployee}
             />
