@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { clsx } from 'clsx';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Employee } from '../types';
-import { eligibleForDiscount } from '../utils/cost';
+import { calculateCosts, eligibleForDiscount } from '../utils/cost';
+import { formatCurrency } from '../utils/format';
 
 const dependentSchema = z.object({
   id: z.string(),
@@ -46,6 +47,9 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
   const hasDiscount = eligibleForDiscount(name);
 
   const dependents = watch('dependents') || [];
+
+  const values = watch(); // gets live form state
+  const previewCosts = calculateCosts(values);
 
   const onSubmit = (data: EmployeeFormData) => {
     onSave(data);
@@ -94,6 +98,8 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
           );
         })}
 
+        
+
         <button
           type="button"
           className="mt-2 rounded border px-2 py-1"
@@ -102,6 +108,15 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
           ➕ Add Dependent
         </button>
       </div>
+      
+      <div className="mt-4 rounded bg-gray-50 p-3 text-sm">
+        <p>
+          Estimated yearly: <strong>{formatCurrency(previewCosts.totalYearly)}</strong>
+        </p>
+        <p>
+          Per paycheck: <strong>{formatCurrency(previewCosts.perPaycheck)}</strong>
+        </p>
+      </div>jana novak
 
       <div className="flex gap-2">
         <button type="submit" className="rounded bg-blue-500 px-3 py-1 text-white">
