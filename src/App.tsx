@@ -46,10 +46,11 @@ export default function App() {
         </div>
       </header>
 
-      <div className="space-y-4 bg-gray-50">
-        <div className="container-px flex flex-col items-end">
+      <div className="bg-gray-50">
+        <div className="container-px flex items-center justify-between py-3">
+          <h2 className="text-lg font-semibold">Summary</h2>
           <button
-            className="button-base mt-3 flex items-center gap-1"
+            className="button-base flex items-center gap-1"
             onClick={() => setEditing({ id: '', name: '', dependents: [] })}
           >
             <UserPlusIcon className="h-5 w-5" />
@@ -63,7 +64,7 @@ export default function App() {
 
       <div className="space-y-4 bg-gray-50">
         <div className="container-px flex items-center justify-between px-6 py-3">
-          <h2 className="mb-2 text-lg font-semibold">Employees</h2>
+          <h2 className="text-lg font-semibold">Employees</h2>
           <input
             type="search"
             id="employee-search"
