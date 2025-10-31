@@ -19,32 +19,58 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
     totalDepCost += depCost;
   });
 
+  const personCount = employeeCount + dependentCount;
+
   const totalYearly = totalEmpCost + totalDepCost;
-  const perPaycheck = totalYearly / 26;
-  const avgPerPaycheck = perPaycheck / employeeCount;
-  const avgPerEmployee = totalYearly / employeeCount;
+  const paycheckEmpCost = totalEmpCost / 26;
+  const paycheckDepCost = totalDepCost / 26;
+  const paycheckCost = totalYearly / 26;
+  const avgEmpCostPerEmployee = totalEmpCost / employeeCount;
+  const avgDepCostPerEmployee = totalDepCost / employeeCount;
+  const avgCostPerEmployee = totalYearly / employeeCount;
 
   return (
-    <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3">
-      <div className="w-full space-y-1 rounded-lg bg-white p-4 text-gray-700 shadow-sm sm:w-auto">
-        <h2 className="mb-2 text-lg font-semibold">Summary</h2>
-        <p className="font-medium">Employees: {formatNumber(employeeCount)}</p>
-        <p>Dependents: {formatNumber(dependentCount)}</p>
-      </div>
-
-      <div className="space-y-1 rounded-lg bg-white p-4 text-gray-700 shadow-sm">
-        <h2 className="mb-2 text-lg font-semibold">Per Paycheck</h2>
-        <p className="font-medium">Total: {formatCurrency(perPaycheck)}</p>
-        <p className="font-medium">Employee average:: {formatCurrency(avgPerPaycheck)}</p>
-      </div>
-
-      <div className="hidden space-y-1 rounded-lg bg-white p-4 text-gray-700 shadow-sm sm:block">
-        <h2 className="mb-2 text-lg font-semibold">Yearly Costs</h2>
-        <p className="font-medium">Total: {formatCurrency(totalYearly)}</p>
-        <p>Employees: {formatCurrency(totalEmpCost)}</p>
-        <p>Dependents: {formatCurrency(totalDepCost)}</p>
-        <p>Employee average: {formatCurrency(avgPerEmployee)}</p>
-      </div>
+    <div className="overflow-x-auto rounded-lg bg-white p-4 text-gray-700 shadow-sm">
+      <table className="min-w-full border-collapse text-sm">
+        <thead>
+          <tr className="border-b border-gray-300 text-left text-gray-600">
+            <th className="p-2 font-semibold">Category</th>
+            <th className="p-2 text-right font-semibold">Persons</th>
+            <th className="p-2 text-right font-semibold">Per Paycheck</th>
+            <th className="hidden p-2 text-right font-semibold sm:table-cell">Per Year</th>
+            <th className="hidden p-2 text-right font-semibold sm:table-cell">Average</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-b border-gray-300">
+            <td className="p-2 font-medium">Employees</td>
+            <td className="p-2 text-right">{formatNumber(employeeCount)}</td>
+            <td className="p-2 text-right">{formatCurrency(paycheckEmpCost)}</td>
+            <td className="hidden p-2 text-right sm:table-cell">{formatCurrency(totalEmpCost)}</td>
+            <td className="hidden p-2 text-right sm:table-cell">
+              {formatCurrency(avgEmpCostPerEmployee)}
+            </td>
+          </tr>
+          <tr className="border-b border-gray-300">
+            <td className="p-2 font-medium">Dependents</td>
+            <td className="p-2 text-right">{formatNumber(dependentCount)}</td>
+            <td className="p-2 text-right">{formatCurrency(paycheckDepCost)}</td>
+            <td className="hidden p-2 text-right sm:table-cell">{formatCurrency(totalDepCost)}</td>
+            <td className="hidden p-2 text-right sm:table-cell">
+              {formatCurrency(avgDepCostPerEmployee)}
+            </td>
+          </tr>
+          <tr className="font-semibold">
+            <td className="p-2">Total</td>
+            <td className="p-2 text-right">{formatNumber(personCount)}</td>
+            <td className="p-2 text-right">{formatCurrency(paycheckCost)}</td>
+            <td className="hidden p-2 text-right sm:table-cell">{formatCurrency(totalYearly)}</td>
+            <td className="hidden p-2 text-right sm:table-cell">
+              {formatCurrency(avgCostPerEmployee)}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
