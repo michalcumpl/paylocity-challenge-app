@@ -1,8 +1,8 @@
 import type { Employee } from '../types';
 
-const EMPLOYEE_COST = 1000;
-const DEPENDENT_COST = 500;
-const PAY_PERIODS = 26;
+export const EMPLOYEE_COST = 1000;
+export const DEPENDENT_COST = 500;
+export const PAY_PERIODS = 26;
 
 export function getDiscountFactor(name: string) {
   return name.trim().toLowerCase().startsWith('a') ? 0.9 : 1;
