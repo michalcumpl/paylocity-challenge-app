@@ -1,7 +1,8 @@
+import { UserPlusIcon } from '@heroicons/react/24/outline';
 import { useDeferredValue, useMemo, useState } from 'react';
 import EmployeeForm from './components/EmployeeForm';
 import EmployeeList from './components/EmployeeList';
-import Header from './components/Header';
+import Logo from './components/Logo';
 import Modal from './components/Modal';
 import SummaryPanel from './components/SummaryPanel';
 import { useDebounce } from './hooks/useDebounce';
@@ -50,45 +51,46 @@ export default function App() {
   return (
     <div className="flex h-screen flex-col">
       <header className="sticky top-0 z-20 bg-white shadow-sm">
-        <Header />
+        <div className="container-px my-2 flex items-center justify-between gap-4 align-middle">
+          <Logo className="max-w-36 min-w-36 sm:max-w-56" />
+          <h1 className="text-grey text-sm text-nowrap sm:text-2xl">Healthcare Benefits</h1>
+        </div>
       </header>
 
-      <div className="sticky top-16 z-10 bg-gray-50 shadow-inner">
-        <div className="container flex flex-col items-end py-2">
+      <div className="space-y-4 bg-gray-100">
+        <div className="container-px flex flex-col items-end">
           <button
-            className="blue-button mt-3"
+            className="button-success mt-3 flex items-center gap-1"
             onClick={() => setEditing({ id: '', name: '', dependents: [] })}
           >
+            <UserPlusIcon className="h-5 w-5" />
             Add Employee
           </button>
+        </div>
+        <div className="container-px mb-4">
           <SummaryPanel employees={employees} />
         </div>
       </div>
 
-      <div className="container flex justify-between">
-        <h2 className="mb-2 text-lg font-semibold">Employees</h2>
-        <input
-          type="search"
-          placeholder="Search by name..."
-          className="rounded border px-2 py-1 text-sm"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-        />
+      <div className="space-y-4 bg-gray-100">
+        <div className="container-px flex items-center justify-between px-6 py-3">
+          <h2 className="mb-2 text-lg font-semibold">Employees</h2>
+          <input
+            type="search"
+            placeholder="Search by name..."
+            className="input-base w-auto"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
+        </div>
       </div>
-
-      <main className="overflow-y-auto bg-white">
-        <div className="container pb-16">
-          {deferredEmployees.length === 0 ? (
-            <div className="flex h-full items-center justify-center text-gray-500">
-              No matching employees found.
-            </div>
-          ) : (
-            <EmployeeList
-              employees={deferredEmployees}
-              onEdit={setEditing}
-              onDelete={removeEmployee}
-            />
-          )}
+      <main className="overflow-hidden overflow-y-auto rounded-lg bg-white">
+        <div className="container-px pb-16">
+          <EmployeeList
+            employees={deferredEmployees}
+            onEdit={setEditing}
+            onDelete={removeEmployee}
+          />
         </div>
       </main>
 

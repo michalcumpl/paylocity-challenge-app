@@ -2,81 +2,73 @@ import { useEffect, useRef, useState } from 'react';
 import type { Employee } from '../types';
 import { calculateCosts } from '../utils/cost';
 import { formatCurrency } from '../utils/format';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   employees: Employee[];
   onEdit: (emp: Employee) => void;
   onDelete: (id: string) => void;
-  onFilter?: (query: string) => Employee[]; // 👈 external filter logic
 };
 
 const PAGE_SIZE = 20;
 
-export default function EmployeeList({ employees, onEdit, onDelete, onFilter }: Props) {
+export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const visibleEmployees = employees.slice(0, visibleCount);
 
-  // Filtered (from parent, if provided)
-  const filtered = onFilter ? (onFilter('') ?? []) : employees;
-  const visibleEmployees = filtered.slice(0, visibleCount);
-
-  // Infinite scroll
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
       entries => {
-        const [entry] = entries;
-        if (entry.isIntersecting && visibleCount < filtered.length) {
+        if (entries[0].isIntersecting && visibleCount < employees.length) {
           setVisibleCount(prev => prev + PAGE_SIZE);
         }
       },
       { rootMargin: '100px' },
     );
-
     observer.observe(el);
     return () => observer.disconnect();
-  }, [filtered.length, visibleCount]);
+  }, [visibleCount, employees.length]);
 
-  if (!employees.length) return null;
+  if (!employees.length)
+    return <div className="py-8 text-center text-gray-500">No matching employees found.</div>;
 
   return (
-    <div className="mt-6">
-      <div className="hidden items-center border-b text-sm font-medium text-gray-600 md:grid md:grid-cols-[2fr_2fr_1fr_auto]">
-        <div className="p-2">Name</div>
-        <div className="p-2">Dependents</div>
-        <div className="p-2 text-right">Per Paycheck</div>
-        <div className="p-2 text-right">Actions</div>
+    <div className="w-full text-sm">
+      <div className="sticky top-0 z-10 hidden border-b border-gray-400 bg-white font-medium text-gray-600 md:grid md:grid-cols-4">
+        <div className="px-2 py-2">Name</div>
+        <div className="px-2 py-2">Dependents</div>
+        <div className="px-2 py-2 text-right">Costs</div>
+        <div className="px-2 py-2 text-right">Actions</div>
       </div>
 
+      {/* Rows */}
       {visibleEmployees.map(emp => {
         const { perPaycheck, totalYearly } = calculateCosts(emp);
         const deps = emp.dependents.map(d => d.name).join(', ') || '—';
-
         return (
           <div
             key={emp.id}
-            className="flex flex-col items-center border-b py-2 text-sm md:grid md:grid-cols-[2fr_2fr_1fr_auto]"
+            className="flex flex-col border-b border-gray-300 py-2 sm:grid sm:grid-cols-4"
           >
-            <div className="w-full p-2 font-medium">{emp.name}</div>
-            <div className="w-full p-2 text-gray-700 md:text-left">{deps}</div>
-            <div className="w-full p-2 text-right">
-              {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>
-              <div className="text-xs text-gray-400">{formatCurrency(totalYearly)} /yr</div>
+            <div className="px-2 font-medium">{emp.name}</div>
+            <div className="px-2 text-gray-700">{deps}</div>
+            <div className="px-2 sm:text-right">
+              <div>
+                {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>
+              </div>
+              <div>
+                {formatCurrency(totalYearly)} <span className="text-gray-500">/yr</span>
+              </div>
             </div>
-            <div className="flex justify-end gap-2 p-2">
-              <button
-                className="rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600"
-                onClick={() => onEdit(emp)}
-              >
-                Edit
+            <div className="flex justify-center sm:justify-end">
+              <button className="button-success border-none p-2" onClick={() => onEdit(emp)}>
+                <PencilSquareIcon className="h-5 w-5" />
               </button>
-              <button
-                className="rounded bg-red-500 px-2 py-1 text-xs text-white hover:bg-red-600"
-                onClick={() => onDelete(emp.id)}
-              >
-                Delete
+              <button className="button-danger border-none p-2" onClick={() => onDelete(emp.id)}>
+                <TrashIcon className="h-5 w-5" />
               </button>
             </div>
           </div>
@@ -84,14 +76,6 @@ export default function EmployeeList({ employees, onEdit, onDelete, onFilter }: 
       })}
 
       <div ref={sentinelRef} className="h-8" />
-
-      {visibleEmployees.length < filtered.length && (
-        <p className="py-2 text-center text-sm text-gray-500">Loading more...</p>
-      )}
-
-      {!filtered.length && (
-        <p className="py-4 text-center text-sm text-gray-500">No matching employees found.</p>
-      )}
     </div>
   );
 }

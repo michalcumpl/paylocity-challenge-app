@@ -1,30 +1,20 @@
-import { eligibleForDiscount, getDiscountFactor, calculateCosts } from '../cost';
 import type { Employee } from '../../types';
-
-describe('eligibleForDiscount', () => {
-  it('returns true for names starting with A', () => {
-    expect(eligibleForDiscount('Alice')).toBe(true);
-    expect(eligibleForDiscount('adam')).toBe(true);
-  });
-
-  it('returns false for names not starting with A', () => {
-    expect(eligibleForDiscount('Bob')).toBe(false);
-    expect(eligibleForDiscount('charlie')).toBe(false);
-  });
-
-  it('trims whitespace and ignores case', () => {
-    expect(eligibleForDiscount('  anna ')).toBe(true);
-    expect(eligibleForDiscount('  Brian')).toBe(false);
-  });
-});
+import { calculateCosts, getDiscountFactor } from '../cost';
 
 describe('getDiscountFactor', () => {
   it('returns 0.9 for names starting with A', () => {
     expect(getDiscountFactor('Alice')).toBe(0.9);
+    expect(getDiscountFactor('adam')).toBe(0.9);
   });
 
   it('returns 1 for others', () => {
     expect(getDiscountFactor('Bob')).toBe(1);
+    expect(getDiscountFactor('charlie')).toBe(1);
+  });
+
+  it('trims whitespace and ignores case', () => {
+    expect(getDiscountFactor('  anna ')).toBe(0.9);
+    expect(getDiscountFactor('  Brian')).toBe(1);
   });
 });
 

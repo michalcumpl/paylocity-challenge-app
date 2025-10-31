@@ -4,11 +4,8 @@ const EMPLOYEE_COST = 1000;
 const DEPENDENT_COST = 500;
 const PAY_PERIODS = 26;
 
-export function eligibleForDiscount(name: string) {
-  return name.trim().toLowerCase().startsWith('a');
-}
 export function getDiscountFactor(name: string) {
-  return eligibleForDiscount(name) ? 0.9 : 1;
+  return name.trim().toLowerCase().startsWith('a') ? 0.9 : 1;
 }
 
 export function calculateCosts(employee: Employee) {
