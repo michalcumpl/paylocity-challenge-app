@@ -53,8 +53,8 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
             key={emp.id}
             className="flex flex-col border-b border-gray-300 py-2 sm:grid sm:grid-cols-4"
           >
-            <div className="px-2 text-center font-medium">{emp.name}</div>
-            <div className="px-2 text-center text-gray-700">{deps}</div>
+            <div className="px-2 text-center font-medium sm:text-left">{emp.name}</div>
+            <div className="px-2 text-center text-gray-700 sm:text-left">{deps}</div>
             <div className="px-2 text-center sm:text-right">
               <div>
                 {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>

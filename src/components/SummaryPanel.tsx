@@ -21,6 +21,7 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
 
   const totalYearly = totalEmpCost + totalDepCost;
   const perPaycheck = totalYearly / 26;
+  const avgPerPaycheck = perPaycheck / employeeCount;
   const avgPerEmployee = totalYearly / employeeCount;
 
   return (
@@ -34,7 +35,7 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
       <div className="space-y-1 rounded-lg bg-white p-4 text-gray-700 shadow-sm">
         <h2 className="mb-2 text-lg font-semibold">Per Paycheck</h2>
         <p className="font-medium">Total: {formatCurrency(perPaycheck)}</p>
-        <p>Employee average: {formatCurrency(avgPerEmployee)}</p>
+        <p className="font-medium">Employee average:: {formatCurrency(avgPerPaycheck)}</p>
       </div>
 
       <div className="hidden space-y-1 rounded-lg bg-white p-4 text-gray-700 shadow-sm sm:block">
@@ -42,6 +43,7 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
         <p className="font-medium">Total: {formatCurrency(totalYearly)}</p>
         <p>Employees: {formatCurrency(totalEmpCost)}</p>
         <p>Dependents: {formatCurrency(totalDepCost)}</p>
+        <p>Employee average: {formatCurrency(avgPerEmployee)}</p>
       </div>
     </div>
   );
