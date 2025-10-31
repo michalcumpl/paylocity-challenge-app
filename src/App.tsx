@@ -10,7 +10,7 @@ import { useEmployees } from './hooks/useEmployees';
 import type { Employee } from './types';
 
 export default function App() {
-  const { employees, addEmployee, updateEmployee, removeEmployee, loading } = useEmployees();
+  const { employees, addEmployee, updateEmployee, removeEmployee } = useEmployees();
   const [editing, setEditing] = useState<Employee | null>(null);
   const [query, setQuery] = useState('');
 
@@ -37,17 +37,6 @@ export default function App() {
 
   const deferredEmployees = useDeferredValue(filteredEmployees);
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="flex flex-col items-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-400 border-t-transparent" />
-          <p className="mt-4 text-sm text-gray-600">Loading employees…</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex h-screen flex-col">
       <header className="sticky top-0 z-20 bg-white shadow-sm">
@@ -57,10 +46,10 @@ export default function App() {
         </div>
       </header>
 
-      <div className="space-y-4 bg-gray-100">
+      <div className="space-y-4 bg-gray-50">
         <div className="container-px flex flex-col items-end">
           <button
-            className="button-success mt-3 flex items-center gap-1"
+            className="button-base mt-3 flex items-center gap-1"
             onClick={() => setEditing({ id: '', name: '', dependents: [] })}
           >
             <UserPlusIcon className="h-5 w-5" />
@@ -72,11 +61,12 @@ export default function App() {
         </div>
       </div>
 
-      <div className="space-y-4 bg-gray-100">
+      <div className="space-y-4 bg-gray-50">
         <div className="container-px flex items-center justify-between px-6 py-3">
           <h2 className="mb-2 text-lg font-semibold">Employees</h2>
           <input
             type="search"
+            id="employee-search"
             placeholder="Search by name..."
             className="input-base w-auto"
             value={query}

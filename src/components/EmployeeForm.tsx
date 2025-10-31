@@ -54,8 +54,16 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
       <div>
-        <label className="block text-sm font-medium">Employee Name</label>
-        <input {...register('name')} className="input-base mt-1" placeholder="Employee name" />
+        <label htmlFor="name" className="block text-sm font-medium">
+          Employee Name
+        </label>
+        <input
+          id="name"
+          {...register('name')}
+          className="input-base mt-1"
+          placeholder="Employee name"
+          autoComplete='off'
+        />
         {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
       </div>
 
@@ -74,10 +82,11 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
                     />
                     <button
                       type="button"
-                      className="button-danger p-2.5"
+                      className="button-danger border-none p-2"
                       onClick={() => remove(index)}
+                      aria-label="Remove dependent"
                     >
-                      <TrashIcon className="h-5 w-5" />
+                      <TrashIcon className="h-5 w-5" aria-hidden="true" />
                     </button>
                   </div>
                   {errors.dependents?.[index]?.name && (
@@ -111,7 +120,7 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
       </div>
 
       <div className="flex gap-2">
-        <button type="submit" className="button-success">
+        <button type="submit" className="button-base">
           Save
         </button>
         <button type="button" onClick={onCancel} className="button-base">

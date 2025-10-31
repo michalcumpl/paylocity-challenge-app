@@ -53,9 +53,9 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
             key={emp.id}
             className="flex flex-col border-b border-gray-300 py-2 sm:grid sm:grid-cols-4"
           >
-            <div className="px-2 font-medium">{emp.name}</div>
-            <div className="px-2 text-gray-700">{deps}</div>
-            <div className="px-2 sm:text-right">
+            <div className="px-2 text-center font-medium">{emp.name}</div>
+            <div className="px-2 text-center text-gray-700">{deps}</div>
+            <div className="px-2 text-center sm:text-right">
               <div>
                 {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>
               </div>
@@ -64,11 +64,19 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
               </div>
             </div>
             <div className="flex justify-center sm:justify-end">
-              <button className="button-success border-none p-2" onClick={() => onEdit(emp)}>
-                <PencilSquareIcon className="h-5 w-5" />
+              <button
+                className="button-success border-none p-2"
+                aria-label="Edit employee"
+                onClick={() => onEdit(emp)}
+              >
+                <PencilSquareIcon className="h-5 w-5" aria-hidden="true" />
               </button>
-              <button className="button-danger border-none p-2" onClick={() => onDelete(emp.id)}>
-                <TrashIcon className="h-5 w-5" />
+              <button
+                className="button-danger border-none p-2"
+                aria-label="Remove employee"
+                onClick={() => onDelete(emp.id)}
+              >
+                <TrashIcon className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
           </div>
