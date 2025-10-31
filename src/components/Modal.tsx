@@ -1,4 +1,4 @@
-// src/components/Modal.tsx
+
 import { type ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';

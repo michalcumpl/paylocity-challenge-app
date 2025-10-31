@@ -41,7 +41,6 @@ describe("formatCurrency", () => {
 
   it("accepts custom currency", () => {
     const result = formatCurrency(1234.56, { currency: "EUR" });
-    // Locale may vary, so test pattern rather than exact string
     expect(result).toMatch(/€\s?1,234(\.|,)?56|1,234(\.|,)?56\s?€/);
   });
 
