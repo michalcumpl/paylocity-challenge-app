@@ -1,6 +1,6 @@
 # Paylocity FE Challenge App
 
-This is a **Healthcare Benefits** React app I built for the **Paylocity Front-End Challenge**.
+This is a Healthcare Benefits React app I built for the Paylocity Front-End Challenge.
 You can try it live here: **[https://paylocity-fe-challenge.netlify.app/](https://paylocity-fe-challenge.netlify.app/)**
 
 ## Getting Started
@@ -28,12 +28,12 @@ npm run test
 
 ## How It Works
 
-This is a **client-side React app** that simulates a simple employee benefits management tool.
+This is a client-side React app that simulates a simple employee healthcare benefits management tool.
 
-- On first load, it checks if there’s any existing **employee data** in `localStorage`.
-- If none exists, it uses **faker-js** to generate mock employees and dependents, then stores them locally.
-- Any changes you make (adding, editing, or deleting employees) are automatically **persisted in `localStorage`**.
-- To refresh with a brand new dataset, simply **delete the `employeeData` key in `localStorage`** and **reload the app**.
+- On first load, it checks if there’s any existing employee data in `localStorage`.
+- If none exists, it uses `faker-js` to generate mock employees and dependents, then stores them in `localStorage`.
+- Any changes you make are automatically persisted in `localStorage`.
+- To refresh with a new dataset, simply delete the `employeeData` key in `localStorage` and reload the app.
 
 ## Tech Stack
 
