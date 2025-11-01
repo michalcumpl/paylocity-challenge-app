@@ -27,9 +27,7 @@ export default function App() {
 
   const filteredEmployees = useMemo(() => {
     const q = debouncedQuery.trim().toLowerCase();
-    if (!q) return employees;
-
-    const filtered = employees.filter(emp => emp.name.toLowerCase().includes(q));
+    const filtered = !q ? employees : employees.filter(emp => emp.name.toLowerCase().includes(q));
     return filtered.sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
     );
