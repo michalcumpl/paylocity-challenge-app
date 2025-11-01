@@ -1,7 +1,7 @@
 # Paylocity FE Challenge App
 
 This is a Healthcare Benefits React app I built for the Paylocity Front-End Challenge.
-You can try it live here: **[https://paylocity-fe-challenge.netlify.app/](https://paylocity-fe-challenge.netlify.app/)**
+You can try it live here: [https://paylocity-fe-challenge.netlify.app/](https://paylocity-fe-challenge.netlify.app/)
 
 ## Getting Started
 
@@ -12,7 +12,7 @@ npm install
 npm run dev
 ```
 
-The app will be available at **[http://localhost:5173](http://localhost:5173)** (default Vite port).
+The app will be available at [http://localhost:5173](http://localhost:5173).
 
 ### Build for production
 
@@ -37,12 +37,12 @@ This is a client-side React app that simulates a simple employee healthcare bene
 
 ## Tech Stack
 
-| Category              | Tools / Libraries                                                                                                                                                                        |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Framework & Build** | [React 19](https://react.dev/), [Vite 7](https://vitejs.dev/)                                                                                                                            |
-| **Styling**           | [Tailwind CSS 4](https://tailwindcss.com/)                                                                                                                                               |
-| **Icons**             | [Heroicons React](https://github.com/tailwindlabs/heroicons)                                                                                                                             |
-| **Form Handling**     | [React Hook Form](https://react-hook-form.com/), [Zod](https://zod.dev/)                                                                                                                 |
-| **Mock Data**         | [@faker-js/faker](https://github.com/faker-js/faker)                                                                                                                                     |
-| **Testing**           | [Vitest](https://vitest.dev/), [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/), [jest-dom](https://testing-library.com/docs/ecosystem-jest-dom/) |
-| **Code Quality**      | ESLint, Prettier                                                                                                                                                                         |
+| Category              | Tools / Libraries                                                                                                                                                                       |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Framework & Build** | [React 19](https://react.dev/), [Vite 7](https://vitejs.dev/)                                                                                                                           |
+| **Styling**           | [Tailwind CSS 4](https://tailwindcss.com/)                                                                                                                                              |
+| **Icons**             | [Heroicons React](https://github.com/tailwindlabs/heroicons)                                                                                                                            |
+| **Form Handling**     | [React Hook Form](https://react-hook-form.com/), [Zod](https://zod.dev/)                                                                                                                |
+| **Mock Data**         | [faker-js](https://github.com/faker-js/faker)                                                                                                                                           |
+| **Testing**           | [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/), [jest-dom](https://testing-library.com/docs/ecosystem-jest-dom/) |
+| **Code Quality**      | ESLint, Prettier                                                                                                                                                                        |
