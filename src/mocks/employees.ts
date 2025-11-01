@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import type { Employee, Dependent } from '../types';
+import { MAX_NUM_MOCKED_DEPS, NUM_MOCKED_EMPLOYEES } from '../config';
 
 function makeDependent(): Dependent {
   return {
@@ -9,7 +10,7 @@ function makeDependent(): Dependent {
 }
 
 function makeEmployee(): Employee {
-  const depCount = faker.number.int({ min: 0, max: 3 });
+  const depCount = faker.number.int({ min: 0, max: MAX_NUM_MOCKED_DEPS });
   const dependents: Dependent[] = Array.from({ length: depCount }, () => makeDependent());
   return {
     id: faker.string.uuid(),
@@ -18,4 +19,6 @@ function makeEmployee(): Employee {
   };
 }
 
-export const mockEmployees: Employee[] = Array.from({ length: 4259 }, () => makeEmployee());
+export const mockEmployees: Employee[] = Array.from({ length: NUM_MOCKED_EMPLOYEES }, () =>
+  makeEmployee(),
+);

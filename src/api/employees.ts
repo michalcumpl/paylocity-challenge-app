@@ -1,7 +1,6 @@
 import type { Employee } from '../types';
 import { mockEmployees } from '../mocks/employees';
-
-const STORAGE_KEY = 'employees';
+import { STORAGE_KEY } from '../config';
 
 export const employeeApi = {
   getAll(): Employee[] {

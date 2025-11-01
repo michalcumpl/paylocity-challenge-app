@@ -1,5 +1,6 @@
+import { EMPLOYEE_COST, PAY_PERIODS } from '../config';
 import type { Employee } from '../types';
-import { calculateCosts, EMPLOYEE_COST, getDiscountFactor, PAY_PERIODS } from '../utils/cost';
+import { calculateCosts,  getDiscountFactor } from '../utils/cost';
 import { formatCurrency, formatNumber } from '../utils/format';
 
 export default function SummaryPanel({ employees }: { employees: Employee[] }) {
