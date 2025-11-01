@@ -105,7 +105,7 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
           className="button-base mt-2 flex items-center gap-1"
           onClick={() => append({ id: crypto.randomUUID(), name: '' })}
         >
-          <UserPlusIcon className="size-5" />
+          <UserPlusIcon className="size-5" aria-hidden="true" />
           Add Dependent
         </button>
       </div>

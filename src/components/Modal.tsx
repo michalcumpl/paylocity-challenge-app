@@ -91,7 +91,7 @@ export default function Modal({ open, onClose, children }: Props) {
           aria-label="Close"
           className="absolute top-3 right-3 rounded text-gray-500 hover:text-gray-800"
         >
-          <XMarkIcon className="size-6" />
+          <XMarkIcon className="size-6" aria-hidden="true" />
         </button>
       </div>
     </div>,

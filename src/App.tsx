@@ -51,14 +51,17 @@ export default function App() {
           <summary className="container-px flex cursor-pointer items-center justify-between py-3 select-none focus-visible:-outline-offset-5">
             <h2 className="flex items-center gap-2 text-lg font-semibold">
               Summary
-              <ChevronDownIcon className="size-5 transition-transform group-open:rotate-180" />
+              <ChevronDownIcon
+                className="size-5 transition-transform group-open:rotate-180"
+                aria-hidden="true"
+              />
             </h2>
 
             <button
               className="button-base flex items-center gap-1"
               onClick={() => setEditing({ id: '', name: '', dependents: [] })}
             >
-              <UserPlusIcon className="size-5" />
+              <UserPlusIcon className="size-5" aria-hidden="true" />
               Add Employee
             </button>
           </summary>
