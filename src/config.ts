@@ -1,4 +1,4 @@
-export const STORAGE_KEY = 'employees';
+export const STORAGE_KEY = 'employeeData';
 export const NUM_MOCKED_EMPLOYEES = 9999;
 export const MAX_MOCKED_DEPS = 5;
 export const EMPLOYEE_COST = 1000;

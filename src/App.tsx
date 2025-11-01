@@ -48,7 +48,7 @@ export default function App() {
 
       <div className="bg-gray-50">
         <details open className="group">
-          <summary className="focus-visible:-outline-offset-5 container-px flex cursor-pointer items-center justify-between py-3 select-none">
+          <summary className="container-px flex cursor-pointer items-center justify-between py-3 select-none focus-visible:-outline-offset-5">
             <h2 className="flex items-center gap-2 text-lg font-semibold">
               Summary
               <ChevronDownIcon className="size-5 transition-transform group-open:rotate-180" />
