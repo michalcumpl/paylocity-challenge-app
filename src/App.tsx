@@ -28,9 +28,7 @@ export default function App() {
   const filteredEmployees = useMemo(() => {
     const q = debouncedQuery.trim().toLowerCase();
     const filtered = !q ? employees : employees.filter(emp => emp.name.toLowerCase().includes(q));
-    return filtered.sort((a, b) =>
-      a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
-    );
+    return filtered.sort((a, b) => a.name.localeCompare(b.name));
   }, [employees, debouncedQuery]);
 
   const deferredEmployees = useDeferredValue(filteredEmployees);
