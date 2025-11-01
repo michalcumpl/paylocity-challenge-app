@@ -23,16 +23,11 @@ export default function SummaryPanel({ employees }: { employees: Employee[] }) {
     totalDependentYearlyCost += dependentYearlyCost;
   });
 
-  // Derived aggregates
   const totalPersons = employeeCount + dependentCount;
   const totalYearlyCost = totalEmployeeYearlyCost + totalDependentYearlyCost;
-
-  // Per paycheck
   const employeePaycheckCost = totalEmployeeYearlyCost / PAY_PERIODS;
   const dependentPaycheckCost = totalDependentYearlyCost / PAY_PERIODS;
   const totalPaycheckCost = totalYearlyCost / PAY_PERIODS;
-
-  // Per employee averages
   const avgEmployeeYearlyCost = totalEmployeeYearlyCost / employeeCount;
   const avgDependentYearlyCost = totalDependentYearlyCost / employeeCount;
   const avgTotalYearlyCost = totalYearlyCost / employeeCount;

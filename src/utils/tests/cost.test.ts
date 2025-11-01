@@ -1,10 +1,11 @@
+import { A_DISCOUNT_FACTOR } from '../../config';
 import type { Employee } from '../../types';
 import { calculateCosts, getDiscountFactor } from '../cost';
 
 describe('getDiscountFactor', () => {
   it('returns 0.9 for names starting with A', () => {
-    expect(getDiscountFactor('Alice')).toBe(0.9);
-    expect(getDiscountFactor('adam')).toBe(0.9);
+    expect(getDiscountFactor('Alice')).toBe(A_DISCOUNT_FACTOR);
+    expect(getDiscountFactor('adam')).toBe(A_DISCOUNT_FACTOR);
   });
 
   it('returns 1 for others', () => {

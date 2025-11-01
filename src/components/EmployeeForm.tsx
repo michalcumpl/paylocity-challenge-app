@@ -13,7 +13,7 @@ const dependentSchema = z.object({
 
 const employeeSchema = z.object({
   id: z.string(),
-  name: z.string().min(1, 'Employee name is required'),
+  name: z.string().min(1, 'Name is required'),
   dependents: z.array(dependentSchema),
 });
 

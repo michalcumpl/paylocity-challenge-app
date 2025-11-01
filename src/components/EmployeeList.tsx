@@ -53,7 +53,7 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
             key={emp.id}
             className="border-b border-gray-300 py-2 sm:grid sm:grid-cols-4 sm:items-center"
           >
-            {/* Mobile layout */}
+            {/* Mobile */}
             <div className="flex w-full items-center justify-between px-2 sm:hidden">
               <div className="flex flex-col">
                 <span className="font-medium">{emp.name}</span>
@@ -84,7 +84,7 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
               </div>
             </div>
 
-            {/* Desktop layout */}
+            {/* Desktop */}
             <div className="hidden px-2 text-center font-medium sm:block sm:text-left">
               {emp.name}
             </div>

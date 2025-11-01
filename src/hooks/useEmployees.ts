@@ -5,6 +5,7 @@ import { employeeApi } from '../api/employees';
 export function useEmployees() {
   const [employees, setEmployees] = useState<Employee[]>(() => employeeApi.getAll());
 
+  // Persist to localStorage when employees change
   useEffect(() => {
     employeeApi.saveAll(employees);
   }, [employees]);

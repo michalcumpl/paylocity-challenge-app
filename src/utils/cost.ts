@@ -1,8 +1,8 @@
-import { DEPENDENT_COST, DISCOUNT_FACTOR, EMPLOYEE_COST, PAY_PERIODS } from '../config';
+import { DEPENDENT_COST, EMPLOYEE_COST, A_DISCOUNT_FACTOR, PAY_PERIODS } from '../config';
 import type { Employee } from '../types';
 
 export function getDiscountFactor(name: string) {
-  return name.trim().toLowerCase().startsWith('a') ? DISCOUNT_FACTOR : 1;
+  return name.trim().toLowerCase().startsWith('a') ? A_DISCOUNT_FACTOR : 1;
 }
 
 export function calculateCosts(employee: Employee) {
