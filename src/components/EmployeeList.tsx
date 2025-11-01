@@ -36,7 +36,8 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
 
   return (
     <div className="w-full text-sm">
-      <div className="sticky top-0 z-10 hidden border-b border-gray-400 bg-white font-medium text-gray-600 md:grid md:grid-cols-4">
+      {/* Desktop header */}
+      <div className="sticky top-0 z-10 hidden border-b border-gray-400 bg-white font-medium text-gray-600 sm:grid sm:grid-cols-4">
         <div className="px-2 py-2">Name</div>
         <div className="px-2 py-2">Dependents</div>
         <div className="px-2 py-2 text-right">Costs</div>
@@ -46,14 +47,51 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
       {visibleEmployees.map(emp => {
         const { perPaycheck, totalYearly } = calculateCosts(emp);
         const deps = emp.dependents.map(d => d.name).join(', ') || '—';
+
         return (
           <div
             key={emp.id}
-            className="flex flex-col border-b border-gray-300 py-2 sm:grid sm:grid-cols-4"
+            className="border-b border-gray-300 py-2 sm:grid sm:grid-cols-4 sm:items-center"
           >
-            <div className="px-2 text-center font-medium sm:text-left">{emp.name}</div>
-            <div className="px-2 text-center text-gray-700 sm:text-left">{deps}</div>
-            <div className="px-2 text-center sm:text-right">
+            {/* Mobile layout */}
+            <div className="flex w-full items-center justify-between px-2 sm:hidden">
+              <div className="flex flex-col">
+                <span className="font-medium">{emp.name}</span>
+                <span className="text-gray-700">{deps}</span>
+                <span className="text-gray-900">
+                  {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>
+                </span>
+                <span className="text-gray-900">
+                  {formatCurrency(totalYearly)} <span className="text-gray-500">/yr</span>
+                </span>
+              </div>
+
+              <div className="flex shrink-0 items-center gap-1">
+                <button
+                  className="button-success border-none p-2"
+                  aria-label="Edit employee"
+                  onClick={() => onEdit(emp)}
+                >
+                  <PencilSquareIcon className="size-5" aria-hidden="true" />
+                </button>
+                <button
+                  className="button-danger border-none p-2"
+                  aria-label="Remove employee"
+                  onClick={() => onDelete(emp.id)}
+                >
+                  <TrashIcon className="size-5" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+
+            {/* Desktop layout */}
+            <div className="hidden px-2 text-center font-medium sm:block sm:text-left">
+              {emp.name}
+            </div>
+            <div className="hidden px-2 text-center text-gray-700 sm:block sm:text-left">
+              {deps}
+            </div>
+            <div className="hidden px-2 text-center sm:block sm:text-right">
               <div>
                 {formatCurrency(perPaycheck)} <span className="text-gray-500">/paycheck</span>
               </div>
@@ -61,7 +99,7 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
                 {formatCurrency(totalYearly)} <span className="text-gray-500">/yr</span>
               </div>
             </div>
-            <div className="flex justify-center sm:justify-end">
+            <div className="hidden justify-end sm:flex">
               <button
                 className="button-success border-none p-2"
                 aria-label="Edit employee"
