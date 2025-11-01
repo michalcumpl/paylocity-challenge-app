@@ -1,6 +1,6 @@
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { type ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   open: boolean;
@@ -91,7 +91,7 @@ export default function Modal({ open, onClose, children }: Props) {
           aria-label="Close"
           className="absolute top-3 right-3 rounded text-gray-500 hover:text-gray-800"
         >
-          <XMarkIcon className="h-6 w-6" />
+          <XMarkIcon className="size-6" />
         </button>
       </div>
     </div>,

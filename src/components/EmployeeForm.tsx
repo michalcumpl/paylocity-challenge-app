@@ -62,7 +62,7 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
           {...register('name')}
           className="input-base mt-1"
           placeholder="Employee name"
-          autoComplete='off'
+          autoComplete="off"
         />
         {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
       </div>
@@ -86,7 +86,7 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
                       onClick={() => remove(index)}
                       aria-label="Remove dependent"
                     >
-                      <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                      <TrashIcon className="size-5" aria-hidden="true" />
                     </button>
                   </div>
                   {errors.dependents?.[index]?.name && (
@@ -105,7 +105,7 @@ export default function EmployeeForm({ initial, onSave, onCancel }: Props) {
           className="button-base mt-2 flex items-center gap-1"
           onClick={() => append({ id: crypto.randomUUID(), name: '' })}
         >
-          <UserPlusIcon className="h-5 w-5" />
+          <UserPlusIcon className="size-5" />
           Add Dependent
         </button>
       </div>

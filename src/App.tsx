@@ -1,4 +1,4 @@
-import { UserPlusIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 import { useDeferredValue, useMemo, useState } from 'react';
 import EmployeeForm from './components/EmployeeForm';
 import EmployeeList from './components/EmployeeList';
@@ -47,19 +47,26 @@ export default function App() {
       </header>
 
       <div className="bg-gray-50">
-        <div className="container-px flex items-center justify-between py-3">
-          <h2 className="text-lg font-semibold">Summary</h2>
-          <button
-            className="button-base flex items-center gap-1"
-            onClick={() => setEditing({ id: '', name: '', dependents: [] })}
-          >
-            <UserPlusIcon className="h-5 w-5" />
-            Add Employee
-          </button>
-        </div>
-        <div className="container-px my-1">
-          <SummaryPanel employees={employees} />
-        </div>
+        <details open className="group">
+          <summary className="focus-visible:-outline-offset-5 container-px flex cursor-pointer items-center justify-between py-3 select-none">
+            <h2 className="flex items-center gap-2 text-lg font-semibold">
+              Summary
+              <ChevronDownIcon className="size-5 transition-transform group-open:rotate-180" />
+            </h2>
+
+            <button
+              className="button-base flex items-center gap-1"
+              onClick={() => setEditing({ id: '', name: '', dependents: [] })}
+            >
+              <UserPlusIcon className="size-5" />
+              Add Employee
+            </button>
+          </summary>
+
+          <div className="container-px my-1">
+            <SummaryPanel employees={employees} />
+          </div>
+        </details>
       </div>
 
       <div className="space-y-4 bg-gray-50">
@@ -69,7 +76,7 @@ export default function App() {
             type="search"
             id="employee-search"
             placeholder="Search by name..."
-            className="input-base w-auto h-[34px]"
+            className="input-base h-[34px] w-auto"
             value={query}
             onChange={e => setQuery(e.target.value)}
           />

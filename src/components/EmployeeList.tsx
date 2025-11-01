@@ -1,8 +1,8 @@
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
 import type { Employee } from '../types';
 import { calculateCosts } from '../utils/cost';
 import { formatCurrency } from '../utils/format';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   employees: Employee[];
@@ -69,14 +69,14 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
                 aria-label="Edit employee"
                 onClick={() => onEdit(emp)}
               >
-                <PencilSquareIcon className="h-5 w-5" aria-hidden="true" />
+                <PencilSquareIcon className="size-5" aria-hidden="true" />
               </button>
               <button
                 className="button-danger border-none p-2"
                 aria-label="Remove employee"
                 onClick={() => onDelete(emp.id)}
               >
-                <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                <TrashIcon className="size-5" aria-hidden="true" />
               </button>
             </div>
           </div>
