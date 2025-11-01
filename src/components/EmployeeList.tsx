@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Employee } from '../types';
 import { calculateCosts } from '../utils/cost';
 import { formatCurrency } from '../utils/format';
+import { LIST_PAGE_SIZE } from '../config';
 
 type Props = {
   employees: Employee[];
@@ -10,10 +11,8 @@ type Props = {
   onDelete: (id: string) => void;
 };
 
-const PAGE_SIZE = 20;
-
 export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [visibleCount, setVisibleCount] = useState(LIST_PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const visibleEmployees = employees.slice(0, visibleCount);
 
@@ -23,7 +22,7 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
     const observer = new IntersectionObserver(
       entries => {
         if (entries[0].isIntersecting && visibleCount < employees.length) {
-          setVisibleCount(prev => prev + PAGE_SIZE);
+          setVisibleCount(prev => prev + LIST_PAGE_SIZE);
         }
       },
       { rootMargin: '100px' },
@@ -44,7 +43,6 @@ export default function EmployeeList({ employees, onEdit, onDelete }: Props) {
         <div className="px-2 py-2 text-right">Actions</div>
       </div>
 
-      {/* Rows */}
       {visibleEmployees.map(emp => {
         const { perPaycheck, totalYearly } = calculateCosts(emp);
         const deps = emp.dependents.map(d => d.name).join(', ') || '—';
